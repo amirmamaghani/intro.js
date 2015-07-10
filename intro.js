@@ -1016,7 +1016,7 @@
     if (currentElementPosition !== 'absolute' &&
         currentElementPosition !== 'relative') {
       //change to new intro item
-      targetElement.element.className += ' introjs-relativePosition';
+      //targetElement.element.className += ' introjs-relativePosition';
     }
 
     var parentElm = targetElement.element.parentNode;
