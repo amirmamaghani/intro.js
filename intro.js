@@ -300,8 +300,8 @@
                         helperNumber = document.createTextNode(stepNumber);
 
                     helper.className = 'gps_ring batman-helper';
-                    helper.style.top = helperPosition.top - 16 - 5 + 'px';
-                    helper.style.left = helperPosition.left - 16 - 5 + 'px';
+                    helper.style.top = helperPosition.top + 5 + 'px';
+                    helper.style.left = helperPosition.left + 30 + 'px';
 
                     helper.setAttribute('onclick', 'javascript:introJs().setOptions(' + _options + ').goToStep(' + stepNumber + ').start();');
                     //helper.appendChild(helperNumber);
