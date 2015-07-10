@@ -279,9 +279,15 @@
      * @method _batman
      */
     function _batman(options) {
+        var _options = JSON.stringify(options);
+        var steps = options.steps,
+            helpers = [];
 
-        var steps = document.querySelectorAll('*[data-intro]') || [],
-            helpers = document.querySelectorAll('.batman-helper');
+
+        for (var el = 0; el < steps.length; el++) {
+            if (typeof steps[el].element === 'string')
+                steps[el].element = document.querySelectorAll(steps[el].element)[0];
+        }
 
         function toggle() {
             if (helpers.length == 0 && steps.length > 0) {
@@ -289,16 +295,16 @@
 
                     var step = steps[i],
                         helper = document.createElement('span'),
-                        helperPosition = _getOffset(step),
-                        stepNumber = step.getAttribute('data-step'),
+                        helperPosition = _getOffset(step.element),
+                        stepNumber = i+1,
                         helperNumber = document.createTextNode(stepNumber);
 
-                    helper.className = 'introjs-helperNumberLayer batman-helper';
+                    helper.className = 'gps_ring batman-helper';
                     helper.style.top = helperPosition.top - 16 - 5 + 'px';
                     helper.style.left = helperPosition.left - 16 - 5 + 'px';
 
-                    helper.setAttribute('onclick', 'javascript:introJs().setOptions(' + JSON.stringify(options) + ').goToStep(' + stepNumber + ').start();');
-                    helper.appendChild(helperNumber);
+                    helper.setAttribute('onclick', 'javascript:introJs().setOptions(' + _options + ').goToStep(' + stepNumber + ').start();');
+                    //helper.appendChild(helperNumber);
 
                     addHelpers(step, helper);
                     helpers = document.querySelectorAll('.batman-helper');
@@ -306,7 +312,7 @@
             } else if (helpers.length > 0 && steps.length > 0) {
                 for (var i = 0; i < helpers.length; i++) {
 
-                    var step = steps[i],
+                    var step = steps[i].element,
                         helper = helpers[i];
 
                     helper.className += ' ka-boom';
@@ -322,18 +328,18 @@
         }
 
         function addHelpers(step, helper) {
-            step.parentNode.appendChild(helper);
+            step.element.parentNode.appendChild(helper);
         }
 
         function removeHelpers(step, helper) {
-            step.parentNode.removeChild(helper);
+            step.element.parentNode.removeChild(helper);
         }
 
         window.addEventListener('resize', function () {
             for (var i = 0; i < helpers.length; i++) {
                 var helper = helpers[i],
                     step = steps[i],
-                    helperPosition = _getOffset(step);
+                    helperPosition = _getOffset(step.element);
 
                 helper.style.top = helperPosition.top - 16 - 5 + 'px';
                 helper.style.left = helperPosition.left - 16 - 5 + 'px';
@@ -1275,6 +1281,7 @@
         },
         setOptions: function (options) {
             this._options = _mergeOptions(this._options, options);
+            console.log(this._options);
             return this;
         },
         start: function () {
